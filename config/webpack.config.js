@@ -108,6 +108,31 @@ module.exports = function (webpackEnv) {
 
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
+    const commonConfig = [
+      'postcss-flexbugs-fixes',
+      [
+        'postcss-preset-env',
+        {
+          autoprefixer: {
+            flexbox: 'no-2009',
+          },
+          stage: 3,
+        },
+      ],
+      [
+        'postcss-pxtorem',
+        {
+          rootValue: 14, // (Number | Function) 表示根元素字体大小或根据input参数返回根元素字体大小
+          unitPrecision: 5, // （数字）允许 REM 单位增长到的十进制数字
+          propList: ['*'], // 可以从 px 更改为 rem 的属性 使用通配符*启用所有属性
+          selectorBlackList: [],// （数组）要忽略并保留为 px 的选择器。
+          replace: true, // 替换包含 rems 的规则，而不是添加回退。
+          mediaQuery: false,  // 允许在媒体查询中转换 px
+          minPixelValue: 0, // 最小的转化单位
+          exclude: /node_modules/i // 要忽略并保留为 px 的文件路径
+        }
+      ]
+    ];
     const loaders = [
       isEnvDevelopment && require.resolve('style-loader'),
       isEnvProduction && {
@@ -129,39 +154,16 @@ module.exports = function (webpackEnv) {
         loader: require.resolve('postcss-loader'),
         options: {
           postcssOptions: {
-            // Necessary for external CSS imports to work
-            // https://github.com/facebook/create-react-app/issues/2677
             ident: 'postcss',
             config: false,
             plugins: !useTailwind
               ? [
-                  'postcss-flexbugs-fixes',
-                  [
-                    'postcss-preset-env',
-                    {
-                      autoprefixer: {
-                        flexbox: 'no-2009',
-                      },
-                      stage: 3,
-                    },
-                  ],
-                  // Adds PostCSS Normalize as the reset css with default options,
-                  // so that it honors browserslist config in package.json
-                  // which in turn let's users customize the target behavior as per their needs.
+                  ...commonConfig,
                   'postcss-normalize',
                 ]
               : [
+                  ...commonConfig,
                   'tailwindcss',
-                  'postcss-flexbugs-fixes',
-                  [
-                    'postcss-preset-env',
-                    {
-                      autoprefixer: {
-                        flexbox: 'no-2009',
-                      },
-                      stage: 3,
-                    },
-                  ],
                 ],
           },
           sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
@@ -314,6 +316,7 @@ module.exports = function (webpackEnv) {
       alias: {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
+        '@': '../src',
         'react-native': 'react-native-web',
         // Allows for better profiling with ReactDevTools
         ...(isEnvProductionProfile && {
