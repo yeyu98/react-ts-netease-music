@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const BASE_URL = 'http://localhost:3000/';
 
 const instance = axios.create({
@@ -10,10 +9,13 @@ const instance = axios.create({
 const request: {[key: string]: any} = {}
 
 instance.interceptors.request.use(request => {
+    console.log('请求拦截中...')
+    // loading通过redux保存当前触发的loading的状态 后续再加
     return request;
 })
 
 instance.interceptors.response.use(response => {
+    console.log('响应拦截中...')
     return response
 })
 
