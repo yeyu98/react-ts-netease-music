@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import request from './services/axios';
+import Demo from './components/Demo/Demo';
+import styles from './App.less';
 import './App.css';
-import request from './utlis/axios';
-import { message, Button } from 'antd';
 
 function App() {
   const url = `http://localhost:3000/top/playlist/highquality?before=1503639064232&limit=3`
@@ -10,7 +10,8 @@ function App() {
   })
   return (
     <div className="App">
-      <Button type='primary'>any</Button>
+      <p className={styles['color']}>127439127391289</p>
+      <Demo />
     </div>
   );
 }

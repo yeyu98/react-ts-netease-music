@@ -47,3 +47,9 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## 设置pxtorem npm install --save-dev postcss-pxtorem
 ## 配置代理 npm install --save-dev http-proxy-middleware
+
+
+
+### 遇到的问题
+    配置less时引入less变量没有生效？ 配置的时候需要把less-loader给加入到配置中
+    定义的less变量需要在app以及index中各引入一份是为啥
